@@ -25,10 +25,10 @@
 
 .player-container {
     min-height: 20vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    // justify-content: center;
 }
 
 .dropzone {
@@ -38,6 +38,32 @@
   background-color: #fafafa;
   color: #bdbdbd;
 }
+
+.drop-container {
+  width: 300px;
+  // align-content: center; 
+  // display: inline-block;
+  margin: 10px;
+}
+
+.video-player {
+  display: inline-block;
+  align-content: center;
+  margin: 20px;
+}
+
+.custom-seekbar {
+  height: 30px;
+  cursor: pointer;
+  outline: thin solid orange;
+  width: inherit;
+  margin: 20px;
+}
+
+// .custom-seekbar span
+// {
+//   background-color: orange;
+// }
 
 // .video-control {
 //     width: 50%;

@@ -10,8 +10,9 @@ function App() {
     <div className={`App ${isVisible && `app-push`}`}>
       <header className="App-header">
        {/* <NavBar /> */}
-       <Player />
+       Video Editor
       </header>
+      <Player />
     </div>
   );
 }
