@@ -1,0 +1,19 @@
+.rvt-file-picker {
+  width: 100%;
+  text-align: center;
+  padding: 50px;
+  border: 1px solid #038c7f;
+  background-color: #ccfdf856;
+  cursor: pointer;
+  color: #038c7f;
+  & input {
+    visibility: hidden;
+    position: absolute;
+    right: 0;
+    left: 0;
+  }
+}
+
+.drop-container {
+  height: 20vh;
+}

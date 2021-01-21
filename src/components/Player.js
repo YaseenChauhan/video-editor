@@ -4,7 +4,9 @@ import { faPlay, faPause, faAngleLeft, faAngleRight } from '@fortawesome/free-so
 import ReactPlayer from 'react-player';
 import Dropzone from "react-dropzone";
 // import DragAndDrop from './DragAndDrop';
-import InputRange from 'react-input-range';
+import ReactVideoTrimmer from "react-video-trimmer";
+import "react-video-trimmer/dist/style.css";
+import Slider from "./Slider";
 class Player extends React.Component {
 
     state = {
@@ -19,7 +21,7 @@ class Player extends React.Component {
         event.preventDefault();
         let reader = new FileReader();
         let file = event.target.files[0];
-        console.log(event.target.files[0])
+        // console.log(event.target.files[0])
         reader.onloadend = () => {
             this.setState({
                 video: file,
@@ -172,13 +174,17 @@ class Player extends React.Component {
         .then(data => console.log('data', data))
     }
 
+    seekto = (e) => {
+        this.pl.current.seekTo(20, "seconds");
+    }
+
 
     render() {
             console.log(this.state)
             const loaded = this.state.videoLoaded;
         return (
             <div className="player-container">
-                <div className={`drop-container ${loaded && "left-align"}`}>
+                {/* <div className={`drop-container ${loaded && "left-align"}`}>
                     <Dropzone onDrop={this.handleDrop}>
                         {({ getRootProps, getInputProps }) => (
                             <div {...getRootProps({ className: "dropzone" })}>
@@ -187,7 +193,7 @@ class Player extends React.Component {
                             </div>
                         )}
                     </Dropzone>
-                </div>
+                </div> */}
                 <div className="video-player">
                   {/* {
                       this.state.videoPreviewUrl ?   <ReactPlayer
@@ -206,13 +212,17 @@ class Player extends React.Component {
                   /> : null
                   } */}
 
-                    {
+      {/* <Slider /> */}
+      {/* <button onClick={this.seekto}> seeekto</button> */}
+                
+
+                    {/* {
                         this.state.videoPreviewUrl ?
                             <video id="video" width="400" controls ref={this.pl} onTimeUpdate={this.handleTimeUpdate}
                                 onEnded={this.onend} onLoadedMetadata={ () => this.extractFrames(this.state.videoPreviewUrl)}>
                                 <source src={this.state.videoPreviewUrl} type="video/mp4" />
                             </video> : null
-                    }
+                    } */}
 
                     {/* {
                         this.state.videoPreviewUrl ?
@@ -220,12 +230,12 @@ class Player extends React.Component {
                             </div> : null
                     } */}
 
-                    {
+                    {/* {
                         this.state.videoPreviewUrl ?
                             <div id="custom-seekbar" className="custom-seekbar">
                             </div>
                         : null
-                    }
+                    } */}
                     {/* <InputRange
                         maxValue={20}
                         minValue={0}
@@ -233,8 +243,14 @@ class Player extends React.Component {
                         onChange={value => this.setState({ value })} /> */}
 
                     {/* <button onClick={this.capture}>Capture</button> */}
-                    <canvas id="canvas" style={{ overFlow: "auto" }}></canvas>
+                    {/* <canvas id="canvas" style={{ overFlow: "auto" }}></canvas> */}
                 </div>
+                <ReactVideoTrimmer
+                    loadingFFMPEGText="Loading required libs..."
+                    timeLimit={300}
+                    timeRange={2}
+                    // showEncodeBtn
+                />
                 
             </div>
         )

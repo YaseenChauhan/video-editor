@@ -1,0 +1,52 @@
+.rvt-trimmer-cont {
+  display: block;
+  width: 100%;
+  height: 15px;
+  position: relative;
+  margin-bottom: 20px;
+  margin-top: 30px;
+  background-color: #ccfdf856;
+
+  > * {
+    box-sizing: border-box;
+  }
+  & .rvt-thumb {
+    position: relative;
+    display: inline-block;
+  }
+}
+.rvt-trimmer {
+  background: #038c7f;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1200;
+}
+
+// cursorColor = #0cf;
+.rvt-player-cursor-current {
+  position: absolute;
+  font-size: 12px;
+  top: -22px;
+  padding: 1px 3px;
+  text-align: center;
+  color: #fff;
+  transform: translate(-50%) scale(0.8);
+  background: #038c7f;
+
+  .rvt-player-num {
+    font-family: monospace;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    border: 5px solid transparent;
+    border-top-color: #038c7f;
+    bottom: -9px;
+    left: 50%;
+    margin-left: -5px;
+  }
+}
