@@ -33,10 +33,11 @@ function FilePicker(props) {
       maxSize={MAX_SIZE}
       minSize={MIN_SIZE}
       accept="video/*"
+      multiple={false}
     >
       {({ getRootProps, getInputProps }) => (
         <div {...getRootProps({ className: "dropzone" })}>
-          <input {...getInputProps()} />
+          <input {...getInputProps()} name="videofile"/>
           <p>Drag and drop file or click to select file</p>
         </div>
       )}

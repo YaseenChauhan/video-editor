@@ -5,6 +5,7 @@ const Controls = ({
   onPlayPauseClick,
   playing,
   onReselectFile,
+  addMore,
   processing,
   onEncode,
   showEncodeBtn,
@@ -28,19 +29,11 @@ const Controls = ({
       >
         <Icon name="music" />
       </a>
-      {showEncodeBtn && (
-        <div className="rvt-controller-dropdown rvt-controller-list-wrap">
-          {canDownload ? (
-            <a className="rvt-controller-item" onClick={onDownload}>
-              <Icon name="download" />
-            </a>
-          ) : (
-            <a className="rvt-controller-item" onClick={onEncode}>
-              <Icon name={processing ? "spin" : "replay"} />
-            </a>
-          )}
-        </div>
-      )}
+      <a className="rvt-controller-item" 
+        title="add more"
+        onClick={addMore}>
+          Add More
+      </a>
     </div>
   );
 };

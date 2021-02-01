@@ -117,8 +117,8 @@ class WebVideo {
     console.log('videoObjectUrl', videoObjectUrl);
     let video = document.createElement("video");
     video.src = videoObjectUrl;
-    console.log('video', video);
-    console.log('satte', video.readyState);
+    // console.log('video', video);
+    // console.log('satte', video.readyState);
     while (
       (video.duration === Infinity || isNaN(video.duration)) &&
       video.readyState < 2

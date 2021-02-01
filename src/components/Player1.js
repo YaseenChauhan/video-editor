@@ -79,6 +79,8 @@ class Player extends React.Component {
             Selected <strong>{this.displaySeconds(end - start)}</strong> of{" "}
             <strong>{this.displaySeconds(this.props.timeLimit)}</strong> allowed
           </span>
+        {/* <button className="start-button" onClick={this.addToQueue}>add video to queue</button> */}
+          
         </div>
       </div>
     );
