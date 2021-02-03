@@ -124,9 +124,13 @@ class Trimmer extends PureComponent {
     return this.props.containerWidth - width;
   };
   render() {
-    const start = this.time2pos(this.props.startTime);
+    console.log('prosp', this.props)
+    let start = this.time2pos(this.props.startTime);
     const end = this.time2pos(this.props.endTime);
     const current = this.time2pos(this.props.currentTime);
+    // if (this.props.showMergeVideo) {
+    //     start = 0;
+    // }
 
     return (
       <React.Fragment>
@@ -149,6 +153,31 @@ class Trimmer extends PureComponent {
           <TimeStamp time={this.props.endTime} />
         </Dragger>
         <TrimmerOverLay right={0} width={this.getTrimmerWidth(end)} />
+        <div>
+        {/* <ul id="navlist"> 
+        {
+          this.props.videoThumbnails.map((item, index) => {
+             return <li key ={index} class = "gfg" style={{
+              backgroundImage: `url(${item})`,
+              backgroundPosition: `-${index}px -${index + 50}px`,
+              left: `${index + 60}px`
+             }}><a href="#"></a></li> 
+             
+          })
+        }           
+        </ul>  */}
+
+        {
+          this.props.videoThumbnails.map((item, index) => {
+             return <img key={index} src={item} style={{
+               height: "50px",
+               width: "30px"
+             }}/>
+             
+          })
+        } 
+        </div>
+
       </React.Fragment>
     );
   }
@@ -184,6 +213,18 @@ export class VideoTrimmer extends PureComponent {
     this.setState({ end: time });
   };
 
+  // static getDerivedStateFromProps(props, state) {
+  //   if (props.showMergeVideo) {
+  //     return {
+  //       start: 0,
+  //       end: state.duration
+  //     };
+  //   }
+
+  //   // Return null if the state hasn't changed
+  //   return null;
+  // }
+
   render() {
     return (
       <div className="rvt-trimmer-cont" ref={e => (this.containerRef = e)}>
@@ -200,6 +241,8 @@ export class VideoTrimmer extends PureComponent {
             duration={this.props.duration}
             onGetData={this.handleGetTrimData}
             onPausePlayer={this.onPausePlayer}
+            videoThumbnails={this.props.videoThumbnails}
+            showMergeVideo={this.props.showMergeVideo}
           />
         )}
       </div>

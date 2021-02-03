@@ -63,7 +63,7 @@ class WebVideo {
     if (buffer.byteLength) {
       blob = arrayBufferToBlob(buffer);
     }
-    console.log('blob', blob);
+    // console.log('blob', blob);
     return blob;
   };
 
@@ -103,18 +103,19 @@ class WebVideo {
   }
 
   decode = async file => {
+    // console.log('aaya k nhi')
     this.videoFile = file;
     // this.emit("processingFile");
     // Read File As ArrayBuffer
     const arrayBuffer = await this.readAsArrayBuffer();
-    console.log('arrrayBuffer', arrayBuffer);
+    // console.log('arrrayBuffer', arrayBuffer);
     // convert to dataURL
     const dataURL = await this.readAsDataURL(arrayBuffer);
 
     let videoObjectUrl = URL.createObjectURL(this.videoFile);
 
-    console.log('dataUrl', dataURL);
-    console.log('videoObjectUrl', videoObjectUrl);
+    // console.log('dataUrl', dataURL);
+    // console.log('videoObjectUrl', videoObjectUrl);
     let video = document.createElement("video");
     video.src = videoObjectUrl;
     // console.log('video', video);

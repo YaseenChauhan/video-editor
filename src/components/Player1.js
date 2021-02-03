@@ -9,8 +9,8 @@ class Player extends React.Component {
   componentWillReceiveProps(newProps) {
     const newTimeRange = newProps.timeRange;
     const oldTimeRange = this.props.timeRange;
-    // console.log('old', this.props)
-    // console.log('new', newProps)
+    console.log('old', this.props)
+    console.log('new', newProps)
     const canSeek =
       (oldTimeRange && newTimeRange.start !== oldTimeRange.start) ||
       (!oldTimeRange && newTimeRange.start > 0);

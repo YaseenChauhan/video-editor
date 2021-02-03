@@ -18,6 +18,8 @@ import { noop, arrayBufferToBlob, readBlobURL, download } from "./libs/utils";
 import PropTypes from "prop-types";
 import axios from 'axios';
 
+import Loader from "./components/Loader";
+
 class ReactVideoTrimmer extends React.PureComponent {
   /**
    * @type {WebVideo}
@@ -40,14 +42,17 @@ class ReactVideoTrimmer extends React.PureComponent {
     videoDataURL: "",
     videoFrames: [],
     isDecoding: false,
-    timeRange: { start: 1, end: 5000 },
+    timeRange: { start: 0, end: 0 },
     encodedVideo: null,
     playedSeconds: 0,
     showFile: false,
     sessionId: "",
     videos: [],
     selectedFile: "",
-    selectedVideo: ""
+    selectedVideo: "",
+    videoThumbnails: [],
+    loading: false,
+    showMergeVideo: false
   };
 
   state = this.defaultState;
@@ -60,7 +65,6 @@ class ReactVideoTrimmer extends React.PureComponent {
 
 
   decodeVideoFile = (file, doneCB = noop) => {
-    // console.log('decoding', file)
     this.setState({ decoding: true });
     const webVideo = this.webVideo;
     webVideo.videoFile = file;
@@ -102,62 +106,40 @@ class ReactVideoTrimmer extends React.PureComponent {
   };
 
   uploadVideo = (file) => {
-    console.log('upload video', file);
-      // let formData = new FormData(); 
-      //   formData.append(
-      //     "videofile", file 
-      // ); 
-      // formData.append("id", this.state.sessionId);
-      // console.log('formData', formData); 
-      // const temp = {
-      //    "Content-type": "multipart/form-data"
-      // }  
-      // let uploadUrl = "http://localhost:4000/editor/videothumbnail";
-      // axios.post(uploadUrl, formData, {headers: temp})
-      // .then(res => {
-      //   console.log('reposne', res)
-      //   this.decodeVideoFile(file);
-      //   // this.setState({
-      //   //   showFile: true,
-      //   //   sessionId: res.data.data
-      //   // })
-      // })
-      // .catch(err => console.log('error while uploading video', err));
-
-      let options = {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        method: 'POST'
-      };
-
-      let requestUrl = "http://localhost:4000/editor/videothumbnail";
-    
-      options.body = new FormData();
-      options.body.append("videofile", file);
-      options.body.append("id", this.state.sessionId);
-
-    
-      return fetch(requestUrl, options)
-          .then(response => {
-            console.log('resposne', response)
-            return response.json()
-              .then(responseJson => {
-                //You put some checks here
-                return responseJson;
-              });
-          });
+    this.setState({
+      loading: true
+    })
+    var formData = new FormData(); 
+    formData.append('id', this.state.sessionId);
+    formData.append('videofile', file); 
+    let uploadUrl = "http://localhost:4000/editor/videothumbnail";
+    axios({
+      method: 'POST',
+      url: uploadUrl,
+      data: formData,
+      headers: { 'Content-Type' : 'multipart/form-data' } 
+    })
+    .then((response) => {
+      this.decodeVideoFile(file);
+      this.setState({
+        videoThumbnails: response.data.data.thumbUrl,
+        loading: false,
+        selectedFile: {...this.state.selectedFile, name: response.data.data.videoName}
+      }, () => console.log('state after update', this.state))
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 
   handleVideoTrim = time => {
-    console.log('selected', this.state.selectedFile);
-    console.log('time', time);
-    console.log('videos', this.state.videos);
+    // console.log('selected', this.state.selectedFile);
+    // console.log('time', time);
+    // console.log('videos', this.state.videos);
     this.setState({ timeRange: time });
     let video = this.state.videos.find(video => video.name === this.state.selectedFile.name)
     video['start'] = time.start;
     video['length'] = time.end - time.start;
-    console.log('video', video);
+    // console.log('video', video);
 
   };
   
@@ -222,6 +204,8 @@ class ReactVideoTrimmer extends React.PureComponent {
             timeRangeLimit={this.props.timeRange}
             timeRange={this.state.timeRange}
             currentTime={this.state.playedSeconds}
+            videoThumbnails={this.state.videoThumbnails}
+            showMergeVideo={this.state.showMergeVideo}
           />
         )}
 
@@ -256,15 +240,61 @@ class ReactVideoTrimmer extends React.PureComponent {
 
   handleSubmit = () => {
 
-    console.log('videos', this.state.videos)
+  this.setState({
+    loading: true
+  })
+   
+    let videos = this.state.videos.map(video => {
+      let item = {};
+      item['name'] = video.name;
+      let operations = [
+        {
+          name: "TRIM_VIDEO",
+          start: Math.floor(video.start),
+          duration: Math.floor(video.length)
+        }];
+      item['operations'] = operations;
+      return item;
+    })
 
-    // let createUrl = "https://jsonplaceholder.typicode.com/todos/1";
+    let apiDataToMergeVideos = {
+      id: this.state.sessionId,
+      videos: videos
+    }
+    // console.log('apiDataToMergeVideos', apiDataToMergeVideos);
 
-    // axios.post(createUrl, this.state.videos)
+     let submitUrl = "http://localhost:4000/editor/videoedit";
+     
+    axios.post(submitUrl, apiDataToMergeVideos)
+    .then(res => {
+      console.log("response submit", res.data.data);
+      // alert("successfully submitted")
+      this.setState({
+        ...this.defaultState,
+        videoDataURL: res.data.data.videourl,
+        loading: false,
+        showMergeVideo: true
+      })
+    })
+    .catch(err => {
+      this.setState({
+        loading: true
+      })
+      console.log("error", err);
+      alert("error while merging videos", err)
+    });
+
+
+    // axios.post(submitUrl, apiDataToMergeVideos)
     // .then(res => {
     //   alert("successfully submitted")
+    //   this.setState({
+    //     videoDataURL: res.data,
+    //     loading: false
+    //   })
     // })
     // .catch(err => alert('error while creating id', err));
+
   }
 
   addToQueue = () => {
@@ -279,7 +309,7 @@ class ReactVideoTrimmer extends React.PureComponent {
     const {
       videoDataURL, showFile
     } = this.state;
-    console.log('time', this.state.timeRange)
+    // console.log('time', this.state.timeRange)
     const videoDiv = (
      <>
       <button className="start-button" onClick={this.handleSubmit}>submit</button>
@@ -289,6 +319,9 @@ class ReactVideoTrimmer extends React.PureComponent {
     )
     return (
       <div className="rvt-main-container">
+       {
+         this.state.loading ?  <Loader /> : null
+       }
         {!showFile && <button className="start-button" onClick={this.createStreamId}>start editing</button>}
         { (
           <>

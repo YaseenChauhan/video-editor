@@ -50,3 +50,34 @@
     margin-left: -5px;
   }
 }
+
+#navlist { 
+  position: relative; 
+}             
+#navlist li { 
+  margin: 0; 
+  padding: 0; 
+  list-style: none; 
+  position: absolute; 
+  top: 0; 
+}             
+#navlist li, #navlist a { 
+  height: 100px; 
+  display: block; 
+}            
+.gfg { 
+  width: 100px; 
+  left:0px;
+} 
+.gfg1 { 
+  width: 100px;  
+  left:120px; 
+  background: url( 
+'https://media.geeksforgeeks.org/wp-content/uploads/icon.png') -0px -140px; 
+} 
+.gfg2 { 
+  width: 100px;  
+  left:240px; 
+  background: url( 
+'https://media.geeksforgeeks.org/wp-content/uploads/icon.png') -300px -140px; 
+}  
